@@ -215,6 +215,9 @@ def init_interactive(
         )
         if not live and "live" not in provided:
             workspace.pop("live", None)
+        for key in ("plots", "metrics"):
+            if live and key not in provided:
+                workspace.pop(key, None)
         for value in sorted(workspace.values()):
             tree.add(f"[green]{value}[/green]")
         ui.error_write(tree, styled=True)
@@ -300,11 +303,11 @@ def init(
         )
     else:
         if with_live:
-            # suppress `metrics`/`params` if live is selected, unless
+            # suppress `metrics`/`plots` if live is selected, unless
             # it is also provided via overrides/cli.
             # This makes output to be a checkpoint as well.
             defaults.pop("metrics", None)
-            defaults.pop("params", None)
+            defaults.pop("plots", None)
         else:
             defaults.pop("live", None)  # suppress live otherwise
 
